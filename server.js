@@ -2,7 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyparser = require('body-parser');
 var app = express();
-var url = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL;
+var url = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/notes-development';
 
 app.use(bodyparser.json());
 

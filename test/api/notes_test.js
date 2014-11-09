@@ -9,6 +9,7 @@ var expect = chai.expect;
 
 describe('basic notes crud', function() {
   var id;
+
   it('should be able to create a note', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/notes')
@@ -59,6 +60,18 @@ describe('basic notes crud', function() {
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.eql('success!');
+      done();
+    });
+  });
+
+  it('should not let someone post an empty note', function(done) {
+    chai.request('http://localhost:3000')
+    .post('/api/notes')
+    .send({})
+    .end(function(err, res) {
+      // expect(err).to.eql("Sorry, you can't make an empty note.");
+      expect(res.status).to.eql(500)
+      expect(err).to.eql(null)
       done();
     });
   });

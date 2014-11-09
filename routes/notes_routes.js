@@ -1,6 +1,9 @@
 'use strict';
 var Note = require('../models/note');
 
+Note.schema.path('noteBody').required(true, "Sorry, you can't make an empty note.");
+
+
 module.exports = function(app) {
   app.get('/api/notes', function(req ,res) {
     Note.find({}, function(err, data) {
