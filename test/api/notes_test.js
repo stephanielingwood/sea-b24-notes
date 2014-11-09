@@ -67,11 +67,11 @@ describe('basic notes crud', function() {
   it('should not let someone post an empty note', function(done) {
     chai.request('http://localhost:3000')
     .post('/api/notes')
-    .send({})
+    .send({noteBody: ''})
     .end(function(err, res) {
-      // expect(err).to.eql("Sorry, you can't make an empty note.");
       expect(res.status).to.eql(500)
       expect(err).to.eql(null)
+      expect(res.body.noteBody.message).to.eql('blank notes make me sad')
       done();
     });
   });

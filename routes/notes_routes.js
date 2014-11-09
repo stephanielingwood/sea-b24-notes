@@ -1,7 +1,7 @@
 'use strict';
 var Note = require('../models/note');
 
-Note.schema.path('noteBody').required(true, "Sorry, you can't make an empty note.");
+// Note.schema.path('noteBody').required(true, "Sorry, you can't make an empty note.");
 
 
 module.exports = function(app) {
@@ -22,7 +22,7 @@ module.exports = function(app) {
   app.post('/api/notes', function(req, res) {
     var note = new Note(req.body);
     note.save(function(err, data) {
-      if (err) return res.status(500).send('there was an error');
+      if (err) return res.status(500).send(err.errors);
       res.json(data);
     });
   });
