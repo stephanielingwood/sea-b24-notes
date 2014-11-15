@@ -1,3 +1,4 @@
+/*jshint node: true */
 'use strict';
 
 var mongoose = require('mongoose');
@@ -22,7 +23,7 @@ userSchema.methods.validPassword = function(password) {
 userSchema.methods.generateToken = function(secret) {
   var self = this;
   var token = jwt.encode({
-    iss: self._id 
+    iss: self._id
   }, secret);
   return token;
 };

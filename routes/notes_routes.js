@@ -1,4 +1,6 @@
+/*jshint node: true */
 'use strict';
+
 var Note = require('../models/note');
 
 module.exports = function(app) {
