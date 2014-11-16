@@ -1,6 +1,8 @@
 /*jshint node: true */
 'use strict';
 
+//Many thanks to Charles Renwick for help with the testing code.
+
 process.env.MONGO_URL = 'mongodb://localhost/notes_test';
 var chai = require('chai');
 var chaihttp = require('chai-http');
