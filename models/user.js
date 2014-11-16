@@ -9,7 +9,8 @@ var userSchema = mongoose.Schema({
   basic: {
     email: String,
     password: String
-  }
+  },
+  admin: false
 });
 
 userSchema.methods.generateHash = function(password) {
@@ -23,7 +24,8 @@ userSchema.methods.validPassword = function(password) {
 userSchema.methods.generateToken = function(secret) {
   var self = this;
   var token = jwt.encode({
-    iss: self._id
+    iss: self._id,
+    lastLogin: Date.now()
   }, secret);
   return token;
 };

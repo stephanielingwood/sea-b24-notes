@@ -1,7 +1,6 @@
 /*jshint node: true */
 'use strict';
 
-//Thanks to Ed Heal for the regexp: http://stackoverflow.com/questions/18812317/javascript-regex-for-special-characters
 
 var User = require('../models/user');
 var jwt = require('jwt-simple');
@@ -48,7 +47,6 @@ module.exports = function(app, passport) {
       newUser.save(function(err, data) {
         if (err) return res.status(500).send('server error');
         res.json({'jwt': newUser.generateToken(app.get('jwtSecret'))});
-        console.log(res.json.jwt);
       });
 
     });
