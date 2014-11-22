@@ -11,11 +11,15 @@ module.exports = function(app, passport) {
     res.json({'jwt': req.user.generateToken(app.get('jwtSecret'))});
   });
 
+  app.post('/test', function(req, res) {
+    console.log(req.body.params);
+  });
+
   app.post('/api/users', function(req, res) {
     User.findOne({'email': req.body.email}, function(err, user) {
       if (err) return res.status(500).send('server error');
       if (user) return res.status(500).send('cannot create that user');
-
+      console.log();
       //check to make sure their password only has letters, numbers, and special characters, and is 8 characters or longer
 
       var regNum = /[0-9]/;
