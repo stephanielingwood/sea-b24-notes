@@ -5,6 +5,7 @@ var app = express();
 var url = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/notes-development';
 
 app.use(bodyparser.json());
+app.use(express.static(__dirname + '/build'));
 
 mongoose.connect(url);
 
