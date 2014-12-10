@@ -1,3 +1,5 @@
+'use strict';
+
 process.env.MONGO_URL = 'mongodb://localhost/notes_test';
 var chai = require('chai');
 var chaihttp = require('chai-http');
@@ -28,7 +30,7 @@ describe('basic notes crud', function() {
     .get('/api/notes')
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(Array.isArray(res.body)).to.be.true;
+      expect(Array.isArray(res.body)).to.eql(true);
       done();
     });
   });
@@ -69,9 +71,9 @@ describe('basic notes crud', function() {
     .post('/api/notes')
     .send({noteBody: ''})
     .end(function(err, res) {
-      expect(res.status).to.eql(500)
-      expect(err).to.eql(null)
-      expect(res.body.noteBody.message).to.eql('blank notes make me sad')
+      expect(res.status).to.eql(500);
+      expect(err).to.eql(null);
+      expect(res.body.noteBody.message).to.eql('blank notes make me sad');
       done();
     });
   });
