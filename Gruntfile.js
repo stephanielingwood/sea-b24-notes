@@ -73,8 +73,10 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('test', ['jshint', 'jscs', 'simplemocha']);
+  grunt.registerTask('lint', ['jshint', 'jscs']);
+  grunt.registerTask('test:server', ['simplemocha']);
   grunt.registerTask('test:client', ['browserify:test', 'karma:unit']);
+  grunt.registerTask('test', ['lint', 'test:server', 'test:client']);
   grunt.registerTask('build', ['jshint', 'clean', 'browserify', 'copy:dev']);
-  grunt.registerTask('default', ['test', 'test:client', 'build']);
+  grunt.registerTask('default', ['test', 'build']);
 };
