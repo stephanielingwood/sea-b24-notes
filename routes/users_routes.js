@@ -1,10 +1,7 @@
-/*jshint node: true */
 'use strict';
-
 
 var User = require('../models/user');
 var jwt = require('jwt-simple');
-
 
 module.exports = function(app, passport) {
   app.get('/api/users', passport.authenticate('basic', {session: false}), function(req, res) {
@@ -19,9 +16,8 @@ module.exports = function(app, passport) {
     User.findOne({'email': req.body.email}, function(err, user) {
       if (err) return res.status(500).send('server error');
       if (user) return res.status(500).send('cannot create that user');
-      console.log();
-      //check to make sure their password only has letters, numbers, and special characters, and is 8 characters or longer
 
+      //check to make sure their password only has letters, numbers, and special characters, and is 8 characters or longer
       var regNum = /[0-9]/;
       var regLower = /[a-z]/;
       var regUpper = /[A-Z]/;
@@ -44,7 +40,6 @@ module.exports = function(app, passport) {
       }
 
       //if their password meets the above criteria, create a new user and return a JWT
-
       var newUser = new User();
       newUser.basic.email = req.body.email;
       newUser.basic.password = newUser.generateHash(req.body.password);

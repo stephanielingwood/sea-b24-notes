@@ -1,4 +1,3 @@
-/*jshint node: true */
 'use strict';
 
 //Many thanks to Charles Renwick for help with the testing code.
@@ -7,7 +6,6 @@ process.env.MONGO_URL = 'mongodb://localhost/notes_test';
 var chai = require('chai');
 var chaihttp = require('chai-http');
 chai.use(chaihttp);
-
 
 require('../../server');
 
@@ -27,16 +25,6 @@ describe('user functionality', function() {
       done();
     });
   });
-
-//   // it('should not allow a logged-in user access after 24 hours', function(done) {
-//   //   chai.request('http://localhost:3000')
-//   //   .get('/api/notes')
-//   //   .end(function(err, res) {
-//   //     expect(err).to.eql(null);
-//   //     expect(res.body.msg).to.eql('Session expired. Please log in again.');
-//   //     done();
-//   //   });
-//   // });
 });
 
 describe('user password tests', function() {
@@ -96,54 +84,49 @@ describe('user password tests', function() {
   });
 });
 
-
 describe('basic notes crud', function() {
   var id;
   var jwtToken;
 
-  before(function (done) {
+  before(function(done) {
     chai.request('http://localhost:3000')
     .post('/api/users')
     .send({email: 'test7@example.com', password: 'Password123#'})
-    .end(function (err, res) {
+    .end(function(err, res) {
       jwtToken = res.body.jwt;
       done();
     });
   });
 
-  // console.log('after before-block, jwt is ' + jwtToken);
-
   it('should be able to create a note', function(done) {
-    this.timeout(5000)
+    this.timeout(5000);
     chai.request('http://localhost:3000')
-    .post('/v1/api/notes')
+    .post('/api/notes')
     .set({'jwt': jwtToken})
     .send({noteBody: 'hello world'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      // console.log(res.body);
-      expect(res.body).to.have.property('_id')
+      expect(res.body).to.have.property('_id');
       id = res.body._id;
       expect(res.body.noteBody).to.eql('hello world');
       done();
     });
   });
 
-    // console.log('JWT in get index ' + jwtToken)
   it('should be able to get an index', function(done) {
     chai.request('http://localhost:3000')
-    .get('/v1/api/notes')
+    .get('/api/notes')
     .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(Array.isArray(res.body)).to.be.true;
+      expect(Array.isArray(res.body)).to.eql(true);
       done();
     });
   });
 
   it('should be able to get a single note', function(done) {
     chai.request('http://localhost:3000')
-    .get('/v1/api/notes/' + id)
+    .get('/api/notes/' + id)
     .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
@@ -154,7 +137,7 @@ describe('basic notes crud', function() {
 
   it('should be able to update a note', function(done) {
     chai.request('http://localhost:3000')
-    .put('/v1/api/notes/' + id)
+    .put('/api/notes/' + id)
     .set({jwt: jwtToken})
     .send({noteBody: 'new note body'})
     .end(function(err, res) {
@@ -166,11 +149,24 @@ describe('basic notes crud', function() {
 
   it('should be able to destroy a note', function(done) {
     chai.request('http://localhost:3000')
-    .delete('/v1/api/notes/' + id)
+    .delete('/api/notes/' + id)
     .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.eql('success!');
+      done();
+    });
+  });
+
+  it('should not let someone post an empty note', function(done) {
+    chai.request('http://localhost:3000')
+    .post('/api/notes')
+    .set({jwt: jwtToken})
+    .send({noteBody: ''})
+    .end(function(err, res) {
+      expect(res.status).to.eql(500);
+      expect(err).to.eql(null);
+      expect(res.body.noteBody.message).to.eql('blank notes make me sad');
       done();
     });
   });
