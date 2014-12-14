@@ -2,28 +2,35 @@
 
 require('../../app/js/client');
 require('angular-mocks');
+require('angular-cookies');
+require('angular-base64');
 
 describe('NotesController', function() {
   var $controllerConstructor;
   var $httpBackend;
   var $scope;
+  var $cookies;
 
-  beforeEach(angular.mock.module('notesApp'));
+  beforeEach(angular.mock.module('notesApp', 'ngCookies'));
 
   beforeEach(angular.mock.inject(function($rootScope, $controller) {
     $scope = $rootScope.$new();
+    $cookies = {};
     $controllerConstructor = $controller;
   }));
 
   it('should be able to create a controller', function() {
-    var notesController = $controllerConstructor('notesCtrl', {$scope: $scope});
+    $cookies.jwt = 'fakeJWT';
+    var notesController = $controllerConstructor('notesCtrl', {$scope: $scope, $cookies: $cookies});
     expect(typeof notesController).toBe('object');
   });
 
   describe('rest request', function() {
+
     beforeEach(angular.mock.inject(function(_$httpBackend_) {
       $httpBackend = _$httpBackend_;
-      $controllerConstructor('notesCtrl', {$scope: $scope});
+
+      $controllerConstructor('notesCtrl', {$scope: $scope, $cookies: $cookies});
     }));
 
     afterEach(function() {
@@ -31,7 +38,8 @@ describe('NotesController', function() {
       $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('make an call to index', function() {
+    it('makes a call to index', function() {
+      $cookies.jwt = 'fakeJWT';
       $httpBackend.expectGET('/api/notes').respond(200, [{'noteBody': 'test note', '_id': '1'}]);
 
       $scope.index();

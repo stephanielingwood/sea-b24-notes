@@ -1,50 +1,59 @@
 'use strict';
 
+//to do:
+
+//fix notes routes and tests - add logged in check and function
+//loggedin controller error handling and error test
+//loggedin controller template
+//figure out how to integrate loggedin template to main html file
+//---
+//base 64 encoding to service for signup and signout
+//base 64 encoding code on back end?
+
 module.exports = function(app) {
-  app.controller('authCtrl', ['$scope', '$http', '$cookies', '$base64', '$location', function($scope, $http, $cookies, $base64, $location) {
+  app.controller('authCtrl', ['$scope', '$http', '$cookies', '$base64', '$location', 'userService', function($scope, $http, $cookies, $base64, $location, $userService) {
 
     $scope.errors = [];
 
     $scope.signIn = function() {
       $scope.errors = [];
+      var user = {};
+      user.email = $scope.user.email;
+      user.password = $scope.user.password;
 
-      $http.defaults.headers.common['Authorization'] = 'Basic ' + $base64.encode($scope.user.email + ':' + $scope.user.password); //jshint ignore:line
-
-      $http({
-        method: 'GET',
-        url: '/api/users'
-      })
+      $userService.signIn(user)
       .success(function(data) {
         $cookies.jwt = data.jwt;
+        $cookies.email = $scope.user.email;
         // jscs: disable
         $location.path('/notes'); //jshint ignore:line
         // jscs: enable
       })
-      .error(function(data) {
-        $scope.errors.push(data);
+      .error(function(error) {
+        $scope.errors.push(error);
       });
     };
 
     $scope.signUp = function() {
       $scope.errors = [];
+      var newUser = {};
+      newUser.email = $scope.newUser.email;
+      newUser.password = $scope.newUser.password;
 
       if ($scope.newUser.password !== $scope.newUser.passwordConfirmation) $scope.errors.push({msg: 'password and confirmation did not match'});
       if (!$scope.newUser.email) $scope.errors.push({msg: 'did not specify an email'});
       if ($scope.errors.length) return;
 
-      $http({
-        method: 'POST',
-        url: '/api/users',
-        data: $scope.newUser
-      })
+      $userService.signUp(newUser)
       .success(function(data) {
         $cookies.jwt = data.jwt;
+        $cookies.email = $scope.newUser.email;
         // jscs: disable
         $location.path('/notes'); //jshint ignore:line
         // jscs: enable
       })
-      .error(function() {
-        $scope.errors.push({msg: 'could not create user'});
+      .error(function(error) {
+        $scope.errors.push(error);
       });
     };
 
