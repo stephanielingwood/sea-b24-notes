@@ -14,10 +14,14 @@ var expect = chai.expect;
 describe('user functionality', function() {
   var id;
   var jwtToken;
+
   it('should be able to create a new user', function(done) {
+    var user = {email: 'test@example.com', password: 'Password123#'};
+    user.email = new Buffer(user.email).toString('base64');
+    user.password = new Buffer(user.password).toString('base64');
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: 'test@example.com', password: 'Password123#'})
+    .send(user)
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('jwt');
@@ -29,9 +33,12 @@ describe('user functionality', function() {
 
 describe('user password tests', function() {
   it('should not let a user have a password without a number', function(done) {
+    var user = {email: 'test2@example.com', password: 'testtestT$'};
+    user.email = new Buffer(user.email).toString('base64');
+    user.password = new Buffer(user.password).toString('base64');
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: 'test2@example.com', password: 'testtestT$'})
+    .send(user)
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.eql('password must contain at least one number');
@@ -40,9 +47,12 @@ describe('user password tests', function() {
   });
 
   it('should not let a user have a password without a lower case letter', function(done) {
+    var user = {email: 'test3@example.com', password: 'TESTTEST1%'};
+    user.email = new Buffer(user.email).toString('base64');
+    user.password = new Buffer(user.password).toString('base64');
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: 'test3@example.com', password: 'TESTTEST1%'})
+    .send(user)
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.eql('password must contain at least one lower case letter');
@@ -51,9 +61,12 @@ describe('user password tests', function() {
   });
 
   it('should not let a user have a password without an upper case letter', function(done) {
+    var user = {email: 'test4@example.com', password: 'testtest1%'};
+    user.email = new Buffer(user.email).toString('base64');
+    user.password = new Buffer(user.password).toString('base64');
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: 'test4@example.com', password: 'testtest1%'})
+    .send(user)
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.eql('password must contain at least one upper case letter');
@@ -62,9 +75,12 @@ describe('user password tests', function() {
   });
 
   it('should not let a user have a password without a special character', function(done) {
+    var user = {email: 'test5@example.com', password: 'testtestT1'};
+    user.email = new Buffer(user.email).toString('base64');
+    user.password = new Buffer(user.password).toString('base64');
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: 'test5@example.com', password: 'testtestT1'})
+    .send(user)
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.eql('password must contain at least one special character');
@@ -73,9 +89,12 @@ describe('user password tests', function() {
   });
 
   it('should not let a user have a password less than 8 characters long', function(done) {
+    var user = {email: 'test6@example.com', password: 'tE$t1'};
+    user.email = new Buffer(user.email).toString('base64');
+    user.password = new Buffer(user.password).toString('base64');
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: 'test6@example.com', password: 'tE$t1'})
+    .send(user)
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.eql('password must be at least 8 characters long');
@@ -89,9 +108,12 @@ describe('basic notes crud', function() {
   var jwtToken;
 
   before(function(done) {
+    var user = {email: 'test7@example.com', password: 'Password123#'};
+    user.email = new Buffer(user.email).toString('base64');
+    user.password = new Buffer(user.password).toString('base64');
     chai.request('http://localhost:3000')
     .post('/api/users')
-    .send({email: 'test7@example.com', password: 'Password123#'})
+    .send(user)
     .end(function(err, res) {
       jwtToken = res.body.jwt;
       done();

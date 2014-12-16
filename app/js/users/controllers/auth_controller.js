@@ -29,7 +29,6 @@ module.exports = function(app) {
       var newUser = {};
       newUser.email = $scope.newUser.email;
       newUser.password = $scope.newUser.password;
-
       if ($scope.newUser.password !== $scope.newUser.passwordConfirmation) $scope.errors.push({msg: 'password and confirmation did not match'});
       if (!$scope.newUser.email) $scope.errors.push({msg: 'did not specify an email'});
       if ($scope.errors.length) return;
