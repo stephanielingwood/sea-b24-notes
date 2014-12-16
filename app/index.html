@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <h1>Notes!</h1>
+  <div data-ng-app="notesApp">
+
+<!-- div that loads the loggedIn template if it's not the user login route   -->
+
+    <div data-ng-controller="navCtrl">
+      <div data-ng-if=true>
+        <p>hi</p>
+        <p>{{user.email}}</p>
+        <p>{{user.jwt}}</p>
+        <div nav-direc email="{{user.email}}" signOut="signOut()"></div>
+      </div>
+    </div>
+
+<!-- div that dynamically loads the template associated with the current route     -->
+    <div data-ng-view></div>
+
+  </div>
+
+  <script src="client_bundle.js"></script>
+</body>
+</html>

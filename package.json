@@ -4,8 +4,7 @@
   "description": "a note taking web app",
   "main": "server.js",
   "scripts": {
-      "test": "node_modules/grunt-cli/bin/grunt test",
-      "start": "node server.js"
+    "test": "node_modules/grunt-cli/bin/grunt"
   },
   "repository": {
     "type": "git",
@@ -20,14 +19,30 @@
   "devDependencies": {
     "chai": "^1.9.2",
     "chai-http": "^1.0.0",
+    "debowerify": "^1.1.1",
     "grunt": "^0.4.5",
+    "grunt-browserify": "^3.2.1",
     "grunt-cli": "^0.1.13",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-copy": "^0.7.0",
     "grunt-contrib-jshint": "^0.10.0",
-    "grunt-simple-mocha": "^0.4.0"
+    "grunt-jscs": "^1.0.0",
+    "grunt-karma": "^0.9.0",
+    "grunt-mongo-drop": "^0.1.1",
+    "grunt-simple-mocha": "^0.4.0",
+    "jasmine-core": "^2.1.3",
+    "karma-chrome-launcher": "^0.1.6",
+    "karma-firefox-launcher": "^0.1.3",
+    "karma-jasmine": "^0.3.2",
+    "karma-phantomjs-launcher": "^0.1.4"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.9.2",
     "express": "^4.10.1",
-    "mongoose": "^3.8.18"
+    "jwt-simple": "^0.2.0",
+    "mongoose": "^3.8.18",
+    "passport": "^0.2.1",
+    "passport-http": "^0.2.2"
   }
 }

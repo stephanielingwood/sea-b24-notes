@@ -1,8 +1,6 @@
 'use strict';
+
 var Note = require('../models/note');
-
-// Note.schema.path('noteBody').required(true, "Sorry, you can't make an empty note.");
-
 
 module.exports = function(app) {
   app.get('/api/notes', function(req ,res) {
@@ -13,7 +11,7 @@ module.exports = function(app) {
   });
 
   app.get('/api/notes/:id', function(req, res) {
-    Note.findOne({'_id': req.params.id}, function(err, data) {
+    Note.findOne({_id: req.params.id}, function(err, data) {
       if (err) return res.status(500).send('there was an error');
       res.json(data);
     });
@@ -30,14 +28,14 @@ module.exports = function(app) {
   app.put('/api/notes/:id', function(req, res) {
     var note = req.body;
     delete note._id;
-    Note.findOneAndUpdate({'_id': req.params.id}, note, function(err, data) {
+    Note.findOneAndUpdate({_id: req.params.id}, note, function(err, data) {
       if (err) return res.status(500).send('there was an error');
       res.json(data);
     });
   });
 
   app.delete('/api/notes/:id', function(req, res) {
-    Note.remove({'_id': req.params.id}, function(err) {
+    Note.remove({_id: req.params.id}, function(err) {
       if (err) return res.status(500).send('there was an error');
       res.json({msg: 'success!'});
     });
