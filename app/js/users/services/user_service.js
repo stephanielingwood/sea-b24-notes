@@ -15,11 +15,13 @@ module.exports = function(app) {
         });
       },
 
-      signUp: function(user) {
+      signUp: function(newUser) {
+        newUser.email = $base64.encode(newUser.email);
+        newUser.password = $base64.encode(newUser.password);
         return $http({
           method: 'POST',
           url: '/api/users',
-          data: user
+          data: newUser
         });
       },
 
