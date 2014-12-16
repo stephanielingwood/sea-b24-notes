@@ -7,6 +7,9 @@ require('angular-base64');
 
 var notesApp = angular.module('notesApp', ['ngRoute', 'ngCookies', 'base64']);
 
+//directives
+require('./users/directives/nav_directive')(notesApp);
+
 //services
 require('./services/resource_backend_service')(notesApp);
 require('./users/services/user_service')(notesApp);
@@ -14,7 +17,7 @@ require('./users/services/user_service')(notesApp);
 //controllers
 require('./notes/controllers/notes_controller')(notesApp);
 require('./users/controllers/auth_controller')(notesApp);
-require('./users/controllers/loggedin_controller')(notesApp);
+require('./users/controllers/nav_controller')(notesApp);
 
 notesApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider

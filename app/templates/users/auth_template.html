@@ -1,4 +1,4 @@
-<div data-ng-controller="UsersCtrl">
+<div data-ng-controller="authCtrl">
 
   <div data-ng-hide="existingUser">
     <form name="newUser">
@@ -6,18 +6,18 @@
       <input type="password" data-ng-model="newUser.password">
       <input type="password" data-ng-model="newUser.passwordConfirmation">
 
-      <button data-ng-submit="signUp()">Create New User</button>
+      <button data-ng-click="signUp()">Create New User</button>
     </form>
-  </div>
+  <!-- </div> -->
 
-  <div data-ng-show="existingUser">
+  <!-- <div data-ng-show="existingUser"> -->
     <form name="userForm">
       <input type="text" data-ng-model="user.email">
-      <input type="password" data-ng-model="user password">
+      <input type="password" data-ng-model="user.password">
       <button data-ng-click="signIn()">Sign In</button>
     </form>
-  </div>
+  <!-- </div> -->
 
-  <button data-ng-click="existingUser = !existingUser">{{existingUser ? 'Create New User' : 'Log in to existing account'}}</button>
+  <!-- <button data-ng-click="existingUser = !existingUser">{{existingUser ? 'Create New User' : 'Log in to existing account'}}</button> -->
 
 </div>

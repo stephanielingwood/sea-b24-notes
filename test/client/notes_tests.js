@@ -2,8 +2,6 @@
 
 require('../../app/js/client');
 require('angular-mocks');
-require('angular-cookies');
-require('angular-base64');
 
 describe('NotesController', function() {
   var $controllerConstructor;
@@ -29,13 +27,18 @@ describe('NotesController', function() {
 
     beforeEach(angular.mock.inject(function(_$httpBackend_) {
       $httpBackend = _$httpBackend_;
-
       $controllerConstructor('notesCtrl', {$scope: $scope, $cookies: $cookies});
     }));
 
     afterEach(function() {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    it('should require a valid login to access notes', function() {
+      $cookies.jwt = '';
+      $scope.index();
+      expect($scope.notes).toBe(undefined);
     });
 
     it('makes a call to index', function() {
@@ -52,6 +55,7 @@ describe('NotesController', function() {
     });
 
     it('should save a new note', function() {
+      $cookies.jwt = 'fakeJWT';
       $httpBackend.expectPOST('/api/notes').respond(200, {'noteBody': 'test note', '_id': 1});
       $scope.notes = [];
       $scope.newNote = {'noteBody': 'test note'};
@@ -65,6 +69,7 @@ describe('NotesController', function() {
     });
 
     it('it should delete a note', function() {
+      $cookies.jwt = 'fakeJWT';
       $httpBackend.expectDELETE('/api/notes/1').respond(200);
       var note = {'noteBody':'test note', '_id': 1};
       $scope.notes = [note];
@@ -77,6 +82,7 @@ describe('NotesController', function() {
     });
 
     it('it should edit a note', function() {
+      $cookies.jwt = 'fakeJWT';
       $httpBackend.expectPUT('/api/notes/1').respond(200);
 
       var note = {'noteBody': 'test note', '_id': 1};

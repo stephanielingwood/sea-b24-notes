@@ -1,15 +1,5 @@
 'use strict';
 
-//to do:
-
-//fix notes routes and tests - add logged in check and function
-//loggedin controller error handling and error test
-//loggedin controller template
-//figure out how to integrate loggedin template to main html file
-//---
-//base 64 encoding to service for signup and signout
-//base 64 encoding code on back end?
-
 module.exports = function(app) {
   app.controller('authCtrl', ['$scope', '$http', '$cookies', '$base64', '$location', 'userService', function($scope, $http, $cookies, $base64, $location, $userService) {
 

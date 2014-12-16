@@ -1,15 +1,14 @@
 'use strict';
 
 module.exports = function(app) {
-  app.controller('notesCtrl', ['$scope', '$http', '$cookies', '$location', 'ResourceBackend', function($scope, $http, $cookies, $location, ResourceBackend) {
+  app.controller('notesCtrl', ['$scope', '$http', '$cookies', '$location', 'ResourceBackend', 'userService', function($scope, $http, $cookies, $location, ResourceBackend, userService) {
 
     var notesBackend = new ResourceBackend('notes');
-
-    // if (!$cookies.jwt || $cookies.jwt.length === 0) return $location.path('/users');
 
     $http.defaults.headers.common['jwt'] = $cookies.jwt; //jshint ignore: line
 
     $scope.index = function() {
+      if (!userService.loggedIn($cookies)) return $location.path('/users');
       notesBackend.index()
       .success(function(data) {
         $scope.notes = data;
@@ -17,6 +16,7 @@ module.exports = function(app) {
     };
 
     $scope.saveNewNote = function() {
+      if (!userService.loggedIn($cookies)) return $location.path('/users');
       notesBackend.saveNew($scope.newNote)
       .success(function(data) {
         $scope.notes.push(data);
@@ -25,6 +25,7 @@ module.exports = function(app) {
     };
 
     $scope.saveNote = function(note) {
+      if (!userService.loggedIn($cookies)) return $location.path('/users');
       notesBackend.save(note)
       .success(function() {
         note.editing = false;
@@ -32,6 +33,7 @@ module.exports = function(app) {
     };
 
     $scope.deleteNote = function(note) {
+      if (!userService.loggedIn($cookies)) return $location.path('/users');
       notesBackend.delete(note)
       .success(function() {
         $scope.notes.splice($scope.notes.indexOf(note), 1);
